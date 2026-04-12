@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: taskflow_go_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - go_pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: taskflow_go_api
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/taskflow?sslmode=disable
+      JWT_SECRET: supersecretkey
+      PORT: 5000
+    ports:
+      - "5000:5000"
+
+volumes:
+  go_pgdata:

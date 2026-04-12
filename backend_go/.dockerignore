@@ -1,0 +1,8 @@
+.gocache
+.gocache_local
+.gomodcache
+.idea
+*.exe
+.env
+Output
+Usecase

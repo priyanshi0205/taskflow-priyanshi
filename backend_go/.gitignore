@@ -1,0 +1,5 @@
+.gocache/
+.gomodcache/
+api.exe
+go_sdk.zip
+.env

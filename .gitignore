@@ -1,0 +1,22 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local Go SDK
+_local_go_sdk/
+
+# Backend (Go)
+backend_go/.env
+backend_go/.gocache/
+backend_go/.gocache_local/
+backend_go/.gomodcache/
+backend_go/*.exe
+
+# Frontend (Node)
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log

@@ -1,0 +1,42 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Manrope", sans-serif;
+}
+
+body {
+  @apply min-h-screen bg-background text-foreground antialiased;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(146, 212, 168, 0.32), transparent 36%),
+    radial-gradient(circle at 85% 10%, rgba(253, 186, 116, 0.28), transparent 32%),
+    linear-gradient(180deg, #f8fdf8 0%, #f4f7eb 100%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color:#4c4d4e;
+  font-family: "candara-bold", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
+
+@layer utilities {
+  .card-surface {
+    @apply border border-border bg-card/90 shadow-soft backdrop-blur;
+  }
+}
+
