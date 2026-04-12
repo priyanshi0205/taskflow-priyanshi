@@ -68,7 +68,9 @@ Shared:
 ### Steps
 
 git clone https://github.com/priyanshi0205/taskflow-priyanshi.git
+
 cd taskflow-priyanshi
+
 docker compose up --build
 
 ### Access
