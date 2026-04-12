@@ -107,15 +107,23 @@ Register - POST /api/auth/register
 Request:
 
 {
+
   "email": "test@example.com",
+  
   "password": "password123",
+  
   "name": "Test User"
+  
 }
+
 Response:
 
 {
+
     "id":1,
+    
     "email":"test@example.com
+    
 }
 
 Login - POST /api/auth/login  
@@ -123,14 +131,19 @@ Login - POST /api/auth/login
 Request:
 
 {
+
     "email":"test@example.com",
+    
     "password":"password123"
+    
 }
 
 Response:
 
 {
+
     "token" : "jwt-token"
+    
 }
 
 ### Projects
@@ -143,8 +156,11 @@ Create Projects - POST /api/projects
 Request:
 
 {
+
   "name": "My Project",
+  
   "description":"Add description"
+  
 }
 
 
@@ -155,10 +171,15 @@ Get Tasks - GET /api/projects/:id/tasks
 Create Tasks - POST /api/projects/:id/tasks
 
 Request:
+
 {
+
   "title": "Task title",
+  
   "status": "todo",
+  
   "description": "Add Task description"
+  
 }
 
 Update Tasks - PATCH /api/tasks/:id  
