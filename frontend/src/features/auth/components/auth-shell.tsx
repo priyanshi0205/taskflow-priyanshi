@@ -29,7 +29,7 @@ export function AuthShell({
             <Leaf className="h-6 w-6" />
             
           </div>
-          <img src="../public/logo.png" alt="Greening India by Zomato" className="h-28 ml-auto mr-auto" />
+          <img src="../logo.png" alt="Greening India by Zomato" className="h-28 ml-auto mr-auto" />
           <CardTitle className="text-xl ">{title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
