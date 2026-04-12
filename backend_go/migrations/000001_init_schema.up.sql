@@ -1,7 +1,3 @@
--- Seed credentials:
--- email: seed@example.com
--- password: password
-
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS users (
@@ -31,31 +27,10 @@ CREATE TABLE IF NOT EXISTS tasks (
   assignee_id uuid REFERENCES users(id) ON DELETE SET NULL,
   due_date date,
   created_at timestamp DEFAULT current_timestamp,
-  updated_at timestamp DEFAULT current_timestamp
+  updated_at timestamp DEFAULT current_timestamp,
+  CONSTRAINT tasks_status_check CHECK (status IN ('todo', 'in_progress', 'done')),
+  CONSTRAINT tasks_priority_check CHECK (priority IN ('low', 'medium', 'high'))
 );
-
-ALTER TABLE tasks
-ADD COLUMN IF NOT EXISTS created_by_id uuid REFERENCES users(id) ON DELETE CASCADE;
-
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_constraint WHERE conname = 'tasks_status_check'
-  ) THEN
-    ALTER TABLE tasks
-    ADD CONSTRAINT tasks_status_check CHECK (status IN ('todo', 'in_progress', 'done'));
-  END IF;
-END$$;
-
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_constraint WHERE conname = 'tasks_priority_check'
-  ) THEN
-    ALTER TABLE tasks
-    ADD CONSTRAINT tasks_priority_check CHECK (priority IN ('low', 'medium', 'high'));
-  END IF;
-END$$;
 
 INSERT INTO users (id, name, email, password, created_at)
 VALUES (
@@ -104,7 +79,7 @@ VALUES
   '22222222-2222-2222-2222-222222222222',
   '11111111-1111-1111-1111-111111111111',
   '11111111-1111-1111-1111-111111111111',
-  CURRENT_DATE + INTERVAL '7 days',
+  CURRENT_DATE + 7,
   NOW(),
   NOW()
 ),
@@ -117,7 +92,7 @@ VALUES
   '22222222-2222-2222-2222-222222222222',
   '11111111-1111-1111-1111-111111111111',
   NULL,
-  CURRENT_DATE + INTERVAL '14 days',
+  CURRENT_DATE + 14,
   NOW(),
   NOW()
 ),
@@ -130,7 +105,7 @@ VALUES
   '22222222-2222-2222-2222-222222222222',
   '11111111-1111-1111-1111-111111111111',
   '11111111-1111-1111-1111-111111111111',
-  CURRENT_DATE + INTERVAL '21 days',
+  CURRENT_DATE + 21,
   NOW(),
   NOW()
 )

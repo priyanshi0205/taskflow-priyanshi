@@ -18,7 +18,6 @@ import (
 	usercontroller "backedn_go/controller/user"
 	"backedn_go/internal/shared/config"
 	"backedn_go/internal/shared/database"
-	"backedn_go/model"
 	authrepo "backedn_go/repository/auth"
 	projectrepo "backedn_go/repository/project"
 	taskrepo "backedn_go/repository/task"
@@ -38,10 +37,6 @@ func Run() error {
 
 	db, err := database.NewPostgres(cfg.DatabaseURL)
 	if err != nil {
-		return err
-	}
-
-	if err := database.PrepareSchema(db, &model.User{}, &model.Project{}, &model.Task{}); err != nil {
 		return err
 	}
 
