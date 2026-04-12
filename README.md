@@ -105,12 +105,14 @@ Password: password123
 Register - POST /api/auth/register  
 
 Request:
+
 {
   "email": "test@example.com",
   "password": "password123",
   "name": "Test User"
 }
 Response:
+
 {
     "id":1,
     "email":"test@example.com
@@ -119,6 +121,7 @@ Response:
 Login - POST /api/auth/login  
 
 Request:
+
 {
     "email":"test@example.com",
     "password":"password123"
