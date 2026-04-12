@@ -62,7 +62,7 @@ VALUES (
   '11111111-1111-1111-1111-111111111111',
   'Test User',
   'test@example.com',
-  '$2b$10$wH8V2dY0V6F9n5HcH3JcG.6QwWl1vF5mZ2q8K9GvYp2sJ6WbYcZ9K',
+  '$2a$12$pkDnmjEV6IRfP5r4OIYfietVAA8ft6jR1.zscLH5rlBn92DpuZPGi',
   NOW()
 )
 ON CONFLICT (email) DO UPDATE
