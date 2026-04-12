@@ -84,6 +84,7 @@ App available on : http://localhost:3000
 Database schema is managed using versioned migration files with up and down scripts.
 
 up file → apply schema changes
+
 down file → rollback schema changes
 
 Migrations run automatically on startup.
