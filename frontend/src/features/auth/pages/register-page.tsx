@@ -73,7 +73,7 @@ export function RegisterPage(): React.JSX.Element {
       <form className="space-y-4" onSubmit={onSubmit}>
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Priya Sharma" {...form.register("name")} />
+          <Input id="name" placeholder="Enter your name" {...form.register("name")} />
           <p className="min-h-5 text-xs text-destructive">{form.formState.errors.name?.message}</p>
         </div>
 

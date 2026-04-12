@@ -15,16 +15,19 @@ import (
 	authcontroller "backedn_go/controller/auth"
 	projectcontroller "backedn_go/controller/project"
 	taskcontroller "backedn_go/controller/task"
+	usercontroller "backedn_go/controller/user"
 	"backedn_go/internal/shared/config"
 	"backedn_go/internal/shared/database"
 	"backedn_go/model"
 	authrepo "backedn_go/repository/auth"
 	projectrepo "backedn_go/repository/project"
 	taskrepo "backedn_go/repository/task"
+	userrepo "backedn_go/repository/user"
 	"backedn_go/router"
 	authusecase "backedn_go/usecase/auth"
 	projectusecase "backedn_go/usecase/project"
 	taskusecase "backedn_go/usecase/task"
+	userusecase "backedn_go/usecase/user"
 )
 
 func Run() error {
@@ -45,14 +48,17 @@ func Run() error {
 	authRepository := authrepo.New(db)
 	projectRepository := projectrepo.New(db)
 	taskRepository := taskrepo.New(db)
+	userRepository := userrepo.New(db)
 
 	authUsecase := authusecase.New(authRepository, cfg.JWTSecret)
 	projectUsecase := projectusecase.New(projectRepository)
 	taskUsecase := taskusecase.New(taskRepository)
+	userUsecase := userusecase.New(userRepository)
 
 	authController := authcontroller.New(authUsecase)
 	projectController := projectcontroller.New(projectUsecase)
 	taskController := taskcontroller.New(taskUsecase)
+	userController := usercontroller.New(userUsecase)
 
 	engine := gin.New()
 
@@ -60,6 +66,7 @@ func Run() error {
 		AuthController:    authController,
 		ProjectController: projectController,
 		TaskController:    taskController,
+		UserController:    userController,
 		JWTSecret:         cfg.JWTSecret,
 	})
 

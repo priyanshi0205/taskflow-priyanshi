@@ -1,4 +1,4 @@
-﻿import { useEffect } from "react";
+﻿import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -37,11 +37,14 @@ import type { Task } from "@/types/entities";
 
 import { useTaskUpsertMutation } from "@/features/tasks/hooks/use-task-mutations";
 import { taskFormSchema, type TaskFormValues } from "@/features/tasks/schemas";
+import type { UserDropdownOption } from "@/features/users/api";
 
 interface TaskFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   projectId: string;
+  assigneeOptions: UserDropdownOption[];
+  isAssigneeOptionsLoading: boolean;
   task?: Task;
 }
 
@@ -57,6 +60,8 @@ const PRIORITY_OPTIONS = [
   { value: "high", label: "High" },
 ] as const;
 
+const UNASSIGNED_VALUE = "__unassigned__";
+
 function toDateInputValue(value: string | null): string {
   if (!value) {
     return "";
@@ -65,7 +70,14 @@ function toDateInputValue(value: string | null): string {
   return value.slice(0, 10);
 }
 
-export function TaskFormModal({ open, onOpenChange, projectId, task }: TaskFormModalProps): React.JSX.Element {
+export function TaskFormModal({
+  open,
+  onOpenChange,
+  projectId,
+  assigneeOptions,
+  isAssigneeOptionsLoading,
+  task,
+}: TaskFormModalProps): React.JSX.Element {
   const isMobile = useIsMobile();
   const taskMutation = useTaskUpsertMutation(projectId, task?.id);
 
@@ -82,6 +94,20 @@ export function TaskFormModal({ open, onOpenChange, projectId, task }: TaskFormM
   });
   const selectedStatus = useWatch({ control: form.control, name: "status" });
   const selectedPriority = useWatch({ control: form.control, name: "priority" });
+  const selectedAssignee = useWatch({ control: form.control, name: "assignee_id" }) ?? "";
+
+  const assigneeOptionsForSelect = useMemo(() => {
+    if (!selectedAssignee) {
+      return assigneeOptions;
+    }
+
+    const selectedExists = assigneeOptions.some((option) => option.uuid === selectedAssignee);
+    if (selectedExists) {
+      return assigneeOptions;
+    }
+
+    return [{ name: "Current assignee", uuid: selectedAssignee }, ...assigneeOptions];
+  }, [assigneeOptions, selectedAssignee]);
 
   useEffect(() => {
     form.reset({
@@ -172,8 +198,26 @@ export function TaskFormModal({ open, onOpenChange, projectId, task }: TaskFormM
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="task-assignee">Assignee ID (optional)</Label>
-          <Input id="task-assignee" placeholder="User UUID" {...form.register("assignee_id")} />
+          <Label>Assignee (optional)</Label>
+          <Select
+            disabled={isAssigneeOptionsLoading}
+            value={selectedAssignee || UNASSIGNED_VALUE}
+            onValueChange={(value) => {
+              form.setValue("assignee_id", value === UNASSIGNED_VALUE ? "" : value);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select assignee" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={UNASSIGNED_VALUE}>Unassigned</SelectItem>
+              {assigneeOptionsForSelect.map((option) => (
+                <SelectItem key={option.uuid} value={option.uuid}>
+                  {option.name} - {option.uuid}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">
@@ -225,4 +269,3 @@ export function TaskFormModal({ open, onOpenChange, projectId, task }: TaskFormM
     </Dialog>
   );
 }
-

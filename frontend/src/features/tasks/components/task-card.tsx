@@ -7,6 +7,7 @@ import type { Task, TaskStatus } from "@/types/entities";
 
 interface TaskCardProps {
   task: Task;
+  assigneeLabel?: string;
   canManage: boolean;
   onStatusChange: (taskId: string, status: TaskStatus) => void;
   onEdit: (task: Task) => void;
@@ -29,6 +30,7 @@ const statusLabelMap: Record<TaskStatus, string> = {
 
 export function TaskCard({
   task,
+  assigneeLabel,
   canManage,
   onStatusChange,
   onEdit,
@@ -37,6 +39,9 @@ export function TaskCard({
   isDeletingTask,
 }: TaskCardProps): React.JSX.Element {
   const dueDateText = task.due_date ? new Date(task.due_date).toLocaleDateString() : "No due date";
+  const assigneeText = task.assignee_id
+    ? assigneeLabel ?? `Assignee ${task.assignee_id.slice(0, 8)}...`
+    : "Unassigned";
 
   return (
     <Card className="h-full">
@@ -55,7 +60,7 @@ export function TaskCard({
         </p>
         <p className="inline-flex items-center gap-2">
           <UserRound className="h-4 w-4" />
-          {task.assignee_id ? `Assignee ${task.assignee_id.slice(0, 8)}...` : "Unassigned"}
+          {assigneeText}
         </p>
         <Badge className="capitalize" variant="secondary">
           Priority: {task.priority}
@@ -92,4 +97,3 @@ export function TaskCard({
     </Card>
   );
 }
-

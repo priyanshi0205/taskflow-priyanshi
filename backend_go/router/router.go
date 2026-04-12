@@ -4,6 +4,7 @@ import (
 	authcontroller "backedn_go/controller/auth"
 	projectcontroller "backedn_go/controller/project"
 	taskcontroller "backedn_go/controller/task"
+	usercontroller "backedn_go/controller/user"
 	"net/http"
 	"time"
 
@@ -17,6 +18,7 @@ type Dependencies struct {
 	AuthController    authcontroller.Controller
 	ProjectController projectcontroller.Controller
 	TaskController    taskcontroller.Controller
+	UserController    usercontroller.Controller
 	JWTSecret         string
 }
 
@@ -62,5 +64,11 @@ func RegisterRoutes(engine *gin.Engine, deps Dependencies) {
 		taskGroup.POST("/projects/:id/tasks", deps.TaskController.Create)
 		taskGroup.PATCH("/tasks/:id", deps.TaskController.Update)
 		taskGroup.DELETE("/tasks/:id", deps.TaskController.Delete)
+	}
+
+	userGroup := engine.Group("/users")
+	userGroup.Use(authMiddleware)
+	{
+		userGroup.GET("", deps.UserController.List)
 	}
 }

@@ -75,7 +75,7 @@ export function LoginPage(): React.JSX.Element {
 
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" placeholder="••••••••" {...form.register("password")} />
+          <Input id="password" type="password" placeholder="Enter your password" {...form.register("password")} />
           <p className="min-h-5 text-xs text-destructive">{form.formState.errors.password?.message}</p>
         </div>
 

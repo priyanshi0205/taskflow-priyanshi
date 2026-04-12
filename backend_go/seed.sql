@@ -60,9 +60,9 @@ END$$;
 INSERT INTO users (id, name, email, password, created_at)
 VALUES (
   '11111111-1111-1111-1111-111111111111',
-  'Seed User',
-  'seed@example.com',
-  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
+  'Test User',
+  'test@example.com',
+  '$2b$10$wH8V2dY0V6F9n5HcH3JcG.6QwWl1vF5mZ2q8K9GvYp2sJ6WbYcZ9K',
   NOW()
 )
 ON CONFLICT (email) DO UPDATE

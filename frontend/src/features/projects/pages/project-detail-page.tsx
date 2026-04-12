@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,6 +17,7 @@ import { TaskEmptyState } from "@/features/tasks/components/task-empty-state";
 import { TaskFormModal } from "@/features/tasks/components/task-form-modal";
 import { useDeleteTaskMutation, useProjectTasksQuery } from "@/features/tasks/hooks/use-task-mutations";
 import { useOptimisticTaskStatusMutation } from "@/features/tasks/hooks/use-task-status-mutation";
+import { useUsersQuery } from "@/features/users/hooks";
 import { getErrorMessage } from "@/lib/errors";
 import type { Task, TaskStatus } from "@/types/entities";
 
@@ -53,6 +53,7 @@ export function ProjectDetailPage(): React.JSX.Element {
   const projectId = id ?? "";
 
   const projectQuery = useProjectDetailQuery(projectId);
+  const usersQuery = useUsersQuery();
   const tasksQuery = useProjectTasksQuery(projectId, {
     status: statusFilter,
     assignee: assigneeFilter,
@@ -74,6 +75,16 @@ export function ProjectDetailPage(): React.JSX.Element {
       done: tasks.filter((task) => task.status === "done").length,
     };
   }, [projectQuery.data?.tasks]);
+
+  const assigneeLabelByUUID = useMemo(() => {
+    const map = new Map<string, string>();
+
+    (usersQuery.data ?? []).forEach((option) => {
+      map.set(option.uuid, `${option.name} - ${option.uuid}`);
+    });
+
+    return map;
+  }, [usersQuery.data]);
 
   const openCreateTaskForm = (): void => {
     setSelectedTask(undefined);
@@ -227,11 +238,22 @@ export function ProjectDetailPage(): React.JSX.Element {
                   </SelectContent>
                 </Select>
 
-                <Input
-                  value={assigneeFilter}
-                  onChange={(event) => setAssigneeFilter(event.target.value)}
-                  placeholder="Filter by assignee UUID"
-                />
+                <Select
+                  value={assigneeFilter || "all"}
+                  onValueChange={(value) => setAssigneeFilter(value === "all" ? "" : value)}
+                >
+                  <SelectTrigger disabled={usersQuery.isLoading}>
+                    <SelectValue placeholder="Filter by assignee" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All assignees</SelectItem>
+                    {(usersQuery.data ?? []).map((option) => (
+                      <SelectItem key={option.uuid} value={option.uuid}>
+                        {option.name} - {option.uuid}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
@@ -254,6 +276,7 @@ export function ProjectDetailPage(): React.JSX.Element {
                 <TaskCard
                   key={task.id}
                   task={task}
+                  assigneeLabel={task.assignee_id ? assigneeLabelByUUID.get(task.assignee_id) : undefined}
                   canManage={canManageTask}
                   onDelete={handleDeleteTask}
                   onEdit={openEditTaskForm}
@@ -313,6 +336,8 @@ export function ProjectDetailPage(): React.JSX.Element {
         open={isTaskFormOpen}
         onOpenChange={setIsTaskFormOpen}
         projectId={projectId}
+        assigneeOptions={usersQuery.data ?? []}
+        isAssigneeOptionsLoading={usersQuery.isLoading}
         task={selectedTask}
       />
 
