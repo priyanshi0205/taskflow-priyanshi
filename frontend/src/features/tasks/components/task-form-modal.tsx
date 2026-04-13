@@ -241,7 +241,7 @@ export function TaskFormModal({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{task ? "Edit task" : "Create task"}</DialogTitle>
-          <DialogDescription>Use structured fields so everyone can move quickly.</DialogDescription>
+          <DialogDescription>Fill details and keep your project workflow clear.</DialogDescription>
         </DialogHeader>
 
         {formBody}
