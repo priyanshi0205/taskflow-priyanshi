@@ -39,6 +39,8 @@ import { useTaskUpsertMutation } from "@/features/tasks/hooks/use-task-mutations
 import { taskFormSchema, type TaskFormValues } from "@/features/tasks/schemas";
 import type { UserDropdownOption } from "@/features/users/api";
 
+import { PRIORITY_OPTIONS, STATUS_OPTIONS, UNASSIGNED_VALUE } from "../constant";
+
 interface TaskFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -48,25 +50,10 @@ interface TaskFormModalProps {
   task?: Task;
 }
 
-const STATUS_OPTIONS = [
-  { value: "todo", label: "To do" },
-  { value: "in_progress", label: "In progress" },
-  { value: "done", label: "Done" },
-] as const;
-
-const PRIORITY_OPTIONS = [
-  { value: "low", label: "Low" },
-  { value: "medium", label: "Medium" },
-  { value: "high", label: "High" },
-] as const;
-
-const UNASSIGNED_VALUE = "__unassigned__";
-
 function toDateInputValue(value: string | null): string {
   if (!value) {
     return "";
   }
-
   return value.slice(0, 10);
 }
 

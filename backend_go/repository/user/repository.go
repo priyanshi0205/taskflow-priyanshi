@@ -18,7 +18,6 @@ func (r *repository) ListExceptUser(userID string) ([]model.User, error) {
 	var users []model.User
 	if err := r.db.Model(&model.User{}).
 		Select("id", "name").
-		Where("id <> ?", userID).
 		Order("name ASC").
 		Find(&users).Error; err != nil {
 		return nil, err
