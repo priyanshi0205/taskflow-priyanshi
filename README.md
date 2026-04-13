@@ -68,7 +68,9 @@ Shared:
 ### Steps
 
 git clone https://github.com/priyanshi0205/taskflow-priyanshi.git
+
 cd taskflow-priyanshi
+
 docker compose up --build
 
 ### Access
@@ -82,6 +84,7 @@ App available on : http://localhost:3000
 Database schema is managed using versioned migration files with up and down scripts.
 
 up file → apply schema changes
+
 down file → rollback schema changes
 
 Migrations run automatically on startup.
@@ -102,30 +105,46 @@ Password: password123
 Register - POST /api/auth/register  
 
 Request:
-{
-  "email": "test@example.com",
-  "password": "password123",
-  "name": "Test User"
-}
+
+    {
+     
+    "email": "test@example.com",
+    
+    "password": "password123",
+    
+    "name": "Test User"
+  
+    }
+
 Response:
-{
+
+    {
+
     "id":1,
+    
     "email":"test@example.com
-}
+    
+    }
 
 Login - POST /api/auth/login  
 
 Request:
-{
+
+    {
+
     "email":"test@example.com",
+    
     "password":"password123"
-}
+    
+    }
 
 Response:
 
-{
+    {
+
     "token" : "jwt-token"
-}
+    
+    }
 
 ### Projects
 
@@ -136,10 +155,13 @@ Create Projects - POST /api/projects
 
 Request:
 
-{
-  "name": "My Project",
-  "description":"Add description"
-}
+    {
+
+    "name": "My Project",
+  
+    "description":"Add description"
+  
+    }
 
 
 ### Tasks
@@ -149,11 +171,16 @@ Get Tasks - GET /api/projects/:id/tasks
 Create Tasks - POST /api/projects/:id/tasks
 
 Request:
-{
-  "title": "Task title",
-  "status": "todo",
-  "description": "Add Task description"
-}
+
+    {
+
+    "title": "Task title",
+    
+    "status": "todo",
+    
+    "description": "Add Task description"
+  
+    }
 
 Update Tasks - PATCH /api/tasks/:id  
 
