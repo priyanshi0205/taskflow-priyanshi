@@ -16,8 +16,8 @@ func New(repo userrepo.Repository) Usecase {
 	return &usecase{repo: repo}
 }
 
-func (u *usecase) ListExceptUser(userID string) ([]model.User, *apperror.AppError) {
-	users, err := u.repo.ListExceptUser(userID)
+func (u *usecase) ListAllUser() ([]model.User, *apperror.AppError) {
+	users, err := u.repo.ListAllUser()
 	if err != nil {
 		return nil, apperror.New(http.StatusInternalServerError, "server error")
 	}

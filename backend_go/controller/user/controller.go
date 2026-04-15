@@ -26,7 +26,7 @@ func (ctl *controller) List(c *gin.Context) {
 		return
 	}
 
-	users, appErr := ctl.usecase.ListExceptUser(requesterID)
+	users, appErr := ctl.usecase.ListAllUser()
 	if appErr != nil {
 		response.ErrorWithContext(c, appErr, "failed to list users", "requester_user_id", requesterID)
 		return

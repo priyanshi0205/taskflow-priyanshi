@@ -14,7 +14,7 @@ func New(db *gorm.DB) Repository {
 	return &repository{db: db}
 }
 
-func (r *repository) ListExceptUser(userID string) ([]model.User, error) {
+func (r *repository) ListAllUser() ([]model.User, error) {
 	var users []model.User
 	if err := r.db.Model(&model.User{}).
 		Select("id", "name").

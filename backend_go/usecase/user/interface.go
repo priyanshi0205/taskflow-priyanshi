@@ -6,5 +6,5 @@ import (
 )
 
 type Usecase interface {
-	ListExceptUser(userID string) ([]model.User, *apperror.AppError)
+	ListAllUser() ([]model.User, *apperror.AppError)
 }
